@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classificação de Materiais</title>
+  <style>
+    :root {
+      --primary-color: #1d3557;
+      --accent-color: #457b9d;
+      --bg-color: #f8f9fa;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      color: var(--primary-color);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .btn-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    button {
+      background-color: var(--accent-color);
+      color: white;
+      padding: 14px 20px;
+      font-size: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--primary-color);
+    }
+
+    .info-box {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-box p {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    .cor-box {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      margin-left: 10px;
+      border-radius: 4px;
+      border: 1px solid #000;
+    }
+
+    @media (max-width: 600px) {
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🔍 Selecione o Tipo de Material</h2>
+
+  <div class="btn-grid">
+    <button onclick="mostrarInfo('refrigeracao')">Material de Refrigeração</button>
+    <button onclick="mostrarInfo('filtros')">Filtro e Correias</button>
+    <button onclick="mostrarInfo('transporte')">Transporte e Embarcação</button>
+    <button onclick="mostrarInfo('informatica')">Informática e Câmeras</button>
+    <button onclick="mostrarInfo('epi')">EPI</button>
+    <button onclick="mostrarInfo('eletronicos')">Eletrônicos</button>
+    <button onclick="mostrarInfo('embalagens')">Embalagens</button>
+    <button onclick="mostrarInfo('papelaria')">Papelaria e Pincéis Pilot</button>
+  </div>
+
+  <div id="info" class="info-box" style="display: none;"></div>
+
+  <script>
+    const dados = {
+      refrigeracao: { nome: "Material de Refrigeração", rua: "Rua A", cor: "preto" },
+      filtros: { nome: "Filtro e Correias", rua: "Rua A", cor: "preto" },
+      transporte: { nome: "Transporte e Embarcação", rua: "Rua B", cor: "branco" },
+      informatica: { nome: "Informática e Câmeras", rua: "Rua C", cor: "vermelho" },
+      epi: { nome: "EPI", rua: "Rua C", cor: "laranja" },
+      eletronicos: { nome: "Eletrônicos", rua: "Rua C", cor: "branco" },
+      embalagens: { nome: "Embalagens", rua: "Rua C", cor: "azul" },
+      papelaria: { nome: "Papelaria e Pincéis Pilot", rua: "Rua D", cor: "verde" }
+    };
+
+    const coresHex = {
+      preto: "#000000",
+      verde: "#008000",
+      branco: "#FFFFFF",
+      vermelho: "#FF0000",
+      laranja: "#FFA500",
+      azul: "#0000FF"
+    };
+
+    function mostrarInfo(tipo) {
+      const item = dados[tipo];
+      const infoBox = document.getElementById("info");
+      infoBox.style.display = "block";
+      infoBox.innerHTML = `
+        <p><strong>📦 Categoria:</strong> ${item.nome}</p>
+        <p><strong>📍 Localização:</strong> ${item.rua}</p>
+        <p><strong>🎨 Cor Identificadora:</strong> ${item.cor.toUpperCase()}
+          <span class="cor-box" style="background-color: ${coresHex[item.cor]}"></span>
+        </p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
