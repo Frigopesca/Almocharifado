@@ -1,29 +1,43 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Classificação de Materiais</title>
   <style>
     :root {
       --primary-color: #1d3557;
       --accent-color: #457b9d;
-      --bg-color: #f8f9fa;
+      --bg-color: #f0f2f5;
+      --white: #ffffff;
     }
 
     body {
       font-family: 'Segoe UI', sans-serif;
       background-color: var(--bg-color);
+      color: #333;
       margin: 0;
-      padding: 40px 20px;
+      padding: 30px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 160px;
+      max-width: 70%;
+      height: auto;
+    }
+
     h2 {
       color: var(--primary-color);
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       text-align: center;
     }
 
@@ -32,82 +46,169 @@
       flex-wrap: wrap;
       gap: 10px;
       justify-content: center;
-      margin-bottom: 30px;
     }
 
     button {
       background-color: var(--accent-color);
-      color: white;
+      color: var(--white);
       padding: 14px 20px;
       font-size: 15px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: all 0.2s ease;
+      min-width: 180px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
     }
 
     button:hover {
       background-color: var(--primary-color);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
 
-    .info-box {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 10px;
+    /* Modal (Pop-up) */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
       width: 100%;
-      max-width: 500px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeInBackground 0.3s ease;
     }
 
-    .info-box p {
+    .modal-content {
+      background-color: var(--white);
+      margin: 10% auto;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      position: relative;
+      animation: scaleIn 0.3s ease;
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      color: var(--primary-color);
+    }
+
+    .modal-content p {
       margin: 10px 0;
       font-size: 16px;
     }
 
     .cor-box {
       display: inline-block;
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       vertical-align: middle;
       margin-left: 10px;
       border-radius: 4px;
       border: 1px solid #000;
     }
 
+    .close-btn {
+      background-color: #ccc;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .close-btn:hover {
+      background-color: #bbb;
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeInBackground {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
     @media (max-width: 600px) {
-      button {
-        width: 100%;
+      .modal-content {
+        padding: 20px;
+      }
+
+      .modal-content p {
+        font-size: 18px;
+      }
+
+      .modal-content h3 {
+        font-size: 22px;
+      }
+
+      .cor-box {
+        width: 26px;
+        height: 26px;
       }
     }
   </style>
 </head>
 <body>
 
-  <h2>🔍 Selecione o Tipo de Material</h2>
-
-  <div class="btn-grid">
-    <button onclick="mostrarInfo('refrigeracao')">Material de Refrigeração</button>
-    <button onclick="mostrarInfo('filtros')">Filtro e Correias</button>
-    <button onclick="mostrarInfo('transporte')">Transporte e Embarcação</button>
-    <button onclick="mostrarInfo('informatica')">Informática e Câmeras</button>
-    <button onclick="mostrarInfo('epi')">EPI</button>
-    <button onclick="mostrarInfo('eletronicos')">Eletrônicos</button>
-    <button onclick="mostrarInfo('embalagens')">Embalagens</button>
-    <button onclick="mostrarInfo('papelaria')">Papelaria e Pincéis Pilot</button>
+  <div class="logo-container">
+    <img src="LOGO FRIGOPESCA PNG.png" alt="Logo da Empresa" class="logo">
   </div>
 
-  <div id="info" class="info-box" style="display: none;"></div>
+  <h2>🔎 Selecione a Categoria do Material</h2>
+
+  <div class="btn-grid">
+    <button onclick="abrirModal('refrigeracao')">Refrigeração</button>
+    <button onclick="abrirModal('filtros')">Filtro e Correias</button>
+    <button onclick="abrirModal('transporte')">Transporte e Embarcação</button>
+    <button onclick="abrirModal('informatica')">Informática e Câmeras</button>
+    <button onclick="abrirModal('epi')">EPI</button>
+    <button onclick="abrirModal('eletronicos')">Eletrônicos</button>
+    <button onclick="abrirModal('embalagens')">Embalagens</button>
+    <button onclick="abrirModal('papelaria')">Papelaria</button>
+    <button onclick="abrirModal('compressores')">Compressores</button>
+    <button onclick="abrirModal('eletrica')">Elétrica</button>
+    <button onclick="abrirModal('uso_diario')">Uso Diário</button>
+    <button onclick="abrirModal('hidraulico')">Hidráulico</button>
+    
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content" id="modalContent">
+    </div>
+  </div>
 
   <script>
     const dados = {
-      refrigeracao: { nome: "Material de Refrigeração", rua: "Rua A", cor: "preto" },
-      filtros: { nome: "Filtro e Correias", rua: "Rua A", cor: "preto" },
-      transporte: { nome: "Transporte e Embarcação", rua: "Rua B", cor: "branco" },
-      informatica: { nome: "Informática e Câmeras", rua: "Rua C", cor: "vermelho" },
-      epi: { nome: "EPI", rua: "Rua C", cor: "laranja" },
-      eletronicos: { nome: "Eletrônicos", rua: "Rua C", cor: "branco" },
+      refrigeracao: { nome: "Refrigeração", rua: "Rua A", cor: "azul" },
+      filtros: { nome: "Filtro e Correias", rua: "Rua B", cor: "verde" },
+      transporte: { nome: "Transporte e Embarcação", rua: "Rua C", cor: "vermelho" },
+      informatica: { nome: "Informática e Câmeras", rua: "Rua D", cor: "preto" },
+      epi: { nome: "EPI", rua: "Rua A", cor: "laranja" },
+      eletronicos: { nome: "Eletrônicos", rua: "Rua B", cor: "branco" },
       embalagens: { nome: "Embalagens", rua: "Rua C", cor: "azul" },
-      papelaria: { nome: "Papelaria e Pincéis Pilot", rua: "Rua D", cor: "verde" }
+      papelaria: { nome: "Papelaria e Pincéis Pilot", rua: "Rua D", cor: "verde" },
+      compressores: { nome: "Compressores", rua: "Rua A", cor: "dourado" },
+      eletrica: { nome: "Elétrica", rua: "Rua B", cor: "rosa" },
+      uso_diario: { nome: "Uso Diário", rua: "Rua C", cor: "roxo" },
+      hidraulico: { nome: "Hidráulico", rua: "Rua A", cor: "vinho" },
+      
     };
 
     const coresHex = {
@@ -116,20 +217,40 @@
       branco: "#FFFFFF",
       vermelho: "#FF0000",
       laranja: "#FFA500",
-      azul: "#0000FF"
+      azul: "#0000FF",
+      dourado: "#DAA520",
+      rosa: "#FF69B4",
+      roxo: "#800080",
+      marrom: "#8B4513",
+      vinho: "#800000"
     };
 
-    function mostrarInfo(tipo) {
+    function abrirModal(tipo) {
       const item = dados[tipo];
-      const infoBox = document.getElementById("info");
-      infoBox.style.display = "block";
-      infoBox.innerHTML = `
-        <p><strong>📦 Categoria:</strong> ${item.nome}</p>
-        <p><strong>📍 Localização:</strong> ${item.rua}</p>
-        <p><strong>🎨 Cor Identificadora:</strong> ${item.cor.toUpperCase()}
+      const modal = document.getElementById("modal");
+      const modalContent = document.getElementById("modalContent");
+
+      modalContent.innerHTML = `
+        <h3>📦 ${item.nome}</h3>
+        <p><strong>📍 Rua:</strong> ${item.rua}</p>
+        <p><strong>🎨 Cor:</strong> ${item.cor.toUpperCase()} 
           <span class="cor-box" style="background-color: ${coresHex[item.cor]}"></span>
         </p>
+        <button class="close-btn" onclick="fecharModal()">Fechar</button>
       `;
+
+      modal.style.display = "block";
+    }
+
+    function fecharModal() {
+      document.getElementById("modal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById("modal");
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
     }
   </script>
 
