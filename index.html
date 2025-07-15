@@ -202,7 +202,7 @@
       transporte: { nome: "Transporte e Embarcação", rua: "Rua B", cor: "branco" },
       informatica: { nome: "Informática e Câmeras", rua: "Rua C", cor: "vermelho" },
       epi: { nome: "EPI", rua: "Rua C", cor: "laranja" },
-      eletronicos: { nome: "Eletrônicos", rua: "Rua C", cor: "amarelo" },
+      eletronicos: { nome: "Eletrônicos", rua: "Rua C", cor: "amarelo" }, //
       embalagens: { nome: "Embalagens", rua: "Rua C", cor: "azul" },
       papelaria: { nome: "Papelaria e Pincéis Pilot", rua: "Rua D", cor: "marrom" },
       compressores: { nome: "Compressores", rua: "Rua A", cor: "dourado" },
@@ -213,18 +213,19 @@
     };
 
     const coresHex = {
-      preto: "#000000",
-      verde: "#008000",
-      branco: "#FFFFFF",
-      vermelho: "#FF0000",
-      laranja: "#FFA500",
-      azul: "#0000FF",
-      dourado: "#DAA520",
-      rosa: "#FF69B4",
-      roxo: "#800080",
-      marrom: "#8B4513",
-      vinho: "#800000"
-    };
+  preto: "#000000",
+  verde: "#008000",
+  branco: "#FFFFFF",
+  vermelho: "#FF0000",
+  laranja: "#FFA500",
+  azul: "#0000FF",
+  dourado: "#DAA520",
+  rosa: "#FF69B4",
+  roxo: "#800080",
+  marrom: "#8B4513",
+  vinho: "#800000",
+  amarelo: "#FFFF00" // <- aqui
+};
 
     function abrirModal(tipo) {
       const item = dados[tipo];
