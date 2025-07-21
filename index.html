@@ -187,7 +187,9 @@
     <button onclick="abrirModal('eletrica')">Elétrica</button>
     <button onclick="abrirModal('uso_diario')">Uso Diário</button>
     <button onclick="abrirModal('hidraulico')">Hidráulico</button>
+    <button onclick="abrirModal('embalagens_limpeza')">Embalagens/Limpeza</button>
     <button onclick="abrirCadastro()">➕ Cadastrar Material</button>
+    
   </div>
 
   <div id="modal" class="modal">
@@ -220,6 +222,7 @@
       eletrica: { nome: "Elétrica", rua: "Rua B", cor: "rosa" },
       uso_diario: { nome: "Uso Diário", rua: "Rua B", cor: "roxo" },
       hidraulico: { nome: "Hidráulico", rua: "Rua A", cor: "vinho" },
+      embalagens_limpeza: { nome: "Embalagens/Limpeza", rua: "Rua E", cor: "cinza" },
     };
 
     const coresHex = {
@@ -234,7 +237,8 @@
       roxo: "#800080",
       marrom: "#8B4513",
       vinho: "#800000",
-      amarelo: "#FFFF00"
+      amarelo: "#FFFF00",
+      cinza: "#A9A9A9"
     };
 
     let materiaisCadastrados = JSON.parse(localStorage.getItem("materiais")) || [];
@@ -283,15 +287,23 @@
       document.getElementById("cadastroModal").style.display = "none";
     }
 
-    function salvarMaterial() {
-      const nome = document.getElementById("nomeMaterial").value;
-      const categoria = document.getElementById("categoriaMaterial").value;
-      const andar = document.getElementById("andarMaterial").value;
-      const codigo = document.getElementById("codigoMaterial").value;
-      materiaisCadastrados.push({ nome, categoria, andar, codigo });
-      localStorage.setItem("materiais", JSON.stringify(materiaisCadastrados));
-      fecharCadastro();
-    }
+  function salvarMaterial() {
+  const nome = document.getElementById("nomeMaterial").value.trim();
+  const categoria = document.getElementById("categoriaMaterial").value.trim();
+  const andar = document.getElementById("andarMaterial").value.trim();
+  const codigo = document.getElementById("codigoMaterial").value.trim();
+
+  if (!nome || !categoria || !andar || !codigo) {
+    alert("Por favor, preencha todos os campos.");
+    return;
+  }
+
+  const materiais = JSON.parse(localStorage.getItem("materiais")) || [];
+  materiais.push({ nome, categoria, andar, codigo });
+  localStorage.setItem("materiais", JSON.stringify(materiais));
+  alert("✅ Material cadastrado com sucesso!");
+  fecharCadastro();
+}
 
     window.onclick = function(event) {
       const modal = document.getElementById("modal");
