@@ -101,7 +101,7 @@
       color: var(--primary-color);
     }
 
-    .modal-content p {
+    .modal-content p, .modal-content input {
       margin: 10px 0;
       font-size: 16px;
     }
@@ -187,11 +187,22 @@
     <button onclick="abrirModal('eletrica')">Elétrica</button>
     <button onclick="abrirModal('uso_diario')">Uso Diário</button>
     <button onclick="abrirModal('hidraulico')">Hidráulico</button>
-    
+    <button onclick="abrirCadastro()">➕ Cadastrar Material</button>
   </div>
 
   <div id="modal" class="modal">
-    <div class="modal-content" id="modalContent">
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <div class="modal" id="cadastroModal">
+    <div class="modal-content">
+      <h3>Cadastrar Novo Material</h3>
+      <input id="nomeMaterial" placeholder="Nome do material" required />
+      <input id="categoriaMaterial" placeholder="Categoria (ex: refrigeracao)" required />
+      <input id="andarMaterial" placeholder="Andar" required />
+      <input id="codigoMaterial" placeholder="Código" required />
+      <button onclick="salvarMaterial()">Salvar</button>
+      <button class="close-btn" onclick="fecharCadastro()">Fechar</button>
     </div>
   </div>
 
@@ -202,35 +213,42 @@
       transporte: { nome: "Transporte e Embarcação", rua: "Rua B", cor: "branco" },
       informatica: { nome: "Informática e Câmeras", rua: "Rua C", cor: "vermelho" },
       epi: { nome: "EPI", rua: "Rua C", cor: "laranja" },
-      eletronicos: { nome: "Eletrônicos", rua: "Rua C", cor: "amarelo" }, //
+      eletronicos: { nome: "Eletrônicos", rua: "Rua C", cor: "amarelo" },
       embalagens: { nome: "Embalagens", rua: "Rua C", cor: "azul" },
       papelaria: { nome: "Papelaria e Pincéis Pilot", rua: "Rua D", cor: "marrom" },
       compressores: { nome: "Compressores", rua: "Rua A", cor: "dourado" },
       eletrica: { nome: "Elétrica", rua: "Rua B", cor: "rosa" },
       uso_diario: { nome: "Uso Diário", rua: "Rua B", cor: "roxo" },
       hidraulico: { nome: "Hidráulico", rua: "Rua A", cor: "vinho" },
-      
     };
 
     const coresHex = {
-  preto: "#000000",
-  verde: "#008000",
-  branco: "#FFFFFF",
-  vermelho: "#FF0000",
-  laranja: "#FFA500",
-  azul: "#0000FF",
-  dourado: "#DAA520",
-  rosa: "#FF69B4",
-  roxo: "#800080",
-  marrom: "#8B4513",
-  vinho: "#800000",
-  amarelo: "#FFFF00" // <- aqui
-};
+      preto: "#000000",
+      verde: "#008000",
+      branco: "#FFFFFF",
+      vermelho: "#FF0000",
+      laranja: "#FFA500",
+      azul: "#0000FF",
+      dourado: "#DAA520",
+      rosa: "#FF69B4",
+      roxo: "#800080",
+      marrom: "#8B4513",
+      vinho: "#800000",
+      amarelo: "#FFFF00"
+    };
+
+    let materiaisCadastrados = JSON.parse(localStorage.getItem("materiais")) || [];
 
     function abrirModal(tipo) {
       const item = dados[tipo];
       const modal = document.getElementById("modal");
       const modalContent = document.getElementById("modalContent");
+
+      let materiais = materiaisCadastrados.filter(m => m.categoria === tipo);
+      let materiaisHTML = materiais.length ? `
+        <input type="text" placeholder="Buscar material..." oninput="buscarMaterial(this.value, '${tipo}')">
+        <div id="resultadoBusca"></div>
+      ` : '<p>Nenhum material cadastrado nesta categoria.</p>';
 
       modalContent.innerHTML = `
         <h3>📦 ${item.nome}</h3>
@@ -238,21 +256,48 @@
         <p><strong>🎨 Cor:</strong> ${item.cor.toUpperCase()} 
           <span class="cor-box" style="background-color: ${coresHex[item.cor]}"></span>
         </p>
+        ${materiaisHTML}
         <button class="close-btn" onclick="fecharModal()">Fechar</button>
       `;
 
       modal.style.display = "block";
     }
 
+    function buscarMaterial(valor, categoria) {
+      const resultadoDiv = document.getElementById("resultadoBusca");
+      const encontrados = materiaisCadastrados.filter(m => m.categoria === categoria && m.nome.toLowerCase().includes(valor.toLowerCase()));
+      resultadoDiv.innerHTML = encontrados.length ? encontrados.map(m => `
+        <p>🔹 ${m.nome}<br>🧭 Andar: ${m.andar} | Código: ${m.codigo}</p>
+      `).join('') : '<p>❌ Nenhum material encontrado.</p>';
+    }
+
     function fecharModal() {
       document.getElementById("modal").style.display = "none";
     }
 
+    function abrirCadastro() {
+      document.getElementById("cadastroModal").style.display = "block";
+    }
+
+    function fecharCadastro() {
+      document.getElementById("cadastroModal").style.display = "none";
+    }
+
+    function salvarMaterial() {
+      const nome = document.getElementById("nomeMaterial").value;
+      const categoria = document.getElementById("categoriaMaterial").value;
+      const andar = document.getElementById("andarMaterial").value;
+      const codigo = document.getElementById("codigoMaterial").value;
+      materiaisCadastrados.push({ nome, categoria, andar, codigo });
+      localStorage.setItem("materiais", JSON.stringify(materiaisCadastrados));
+      fecharCadastro();
+    }
+
     window.onclick = function(event) {
       const modal = document.getElementById("modal");
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
+      const cadastro = document.getElementById("cadastroModal");
+      if (event.target === modal) modal.style.display = "none";
+      if (event.target === cadastro) cadastro.style.display = "none";
     }
   </script>
 
