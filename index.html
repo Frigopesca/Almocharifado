@@ -138,6 +138,32 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
+
+    @media (max-width: 600px) {
+      button {
+        width: 100%;
+        height: auto;
+        padding: 16px;
+        font-size: 18px;
+      }
+
+      .modal-content {
+        padding: 20px;
+      }
+
+      .modal-content p {
+        font-size: 18px;
+      }
+
+      .modal-content h3 {
+        font-size: 22px;
+      }
+
+      .cor-box {
+        width: 26px;
+        height: 26px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -166,115 +192,117 @@
   </div>
 
   <div id="modal" class="modal">
-  <div class="modal-content" id="modalContent"></div>
-</div>
-
-<div class="modal" id="cadastroModal">
-  <div class="modal-content">
-    <h3>Cadastrar Novo Material</h3>
-    <form id="formCadastro" action="https://script.google.com/macros/s/AKfycbwZSdvKV1M7IP-cyhzdvoaj44ux3YyaxvvGu5TjxG-SqctA9mW6RhtX4uWauMyq7g/exec" method="POST">
-      <input name="nome" placeholder="Nome do material" required />
-      <input name="categoria" placeholder="Categoria (ex: refrigeracao)" required />
-      <input name="andar" placeholder="Andar" required />
-      <input name="codigo" placeholder="Código" required />
-      <button type="submit">Salvar</button>
-      <button class="close-btn" type="button" onclick="fecharCadastro()">Fechar</button>
-    </form>
-    <div id="resposta" style="margin-top: 10px;"></div>
+    <div class="modal-content" id="modalContent"></div>
   </div>
-</div>
 
- <script>
-  const dados = {
-    refrigeracao: { nome: "Refrigeração", rua: "Rua A", cor: "preto" },
-    filtros: { nome: "Filtros e Correias", rua: "Rua A", cor: "verde" },
-    transporte: { nome: "Transporte e Embarcação", rua: "Rua B", cor: "branco" },
-    informatica: { nome: "Informática e Câmeras", rua: "Rua C", cor: "vermelho" },
-    epi: { nome: "EPI", rua: "Rua C", cor: "laranja" },
-    eletronicos: { nome: "Eletrônicos", rua: "Rua C", cor: "amarelo" },
-    embalagens: { nome: "Embalagens", rua: "Rua C", cor: "azul" },
-    papelaria: { nome: "Papelaria e Pincéis Pilot", rua: "Rua D", cor: "marrom" },
-    compressores: { nome: "Compressores", rua: "Rua A", cor: "dourado" },
-    eletrica: { nome: "Elétrica", rua: "Rua B", cor: "rosa" },
-    uso_diario: { nome: "Uso Diário", rua: "Rua B", cor: "roxo" },
-    hidraulico: { nome: "Hidráulico", rua: "Rua A", cor: "vinho" },
-    embalagens_limpeza: { nome: "Embalagens/Limpeza", rua: "Rua E", cor: "cinza" }
-  };
+  <div class="modal" id="cadastroModal">
+    <div class="modal-content">
+      <h3>Cadastrar Novo Material</h3>
+      <input id="nomeMaterial" placeholder="Nome do material" required />
+      <input id="categoriaMaterial" placeholder="Categoria (ex: refrigeracao)" required />
+      <input id="andarMaterial" placeholder="Andar" required />
+      <input id="codigoMaterial" placeholder="Código" required />
+      <button onclick="salvarMaterial()">Salvar</button>
+      <button class="close-btn" onclick="fecharCadastro()">Fechar</button>
+    </div>
+  </div>
 
-  const coresHex = {
-    preto: "#000000",
-    verde: "#008000",
-    branco: "#FFFFFF",
-    vermelho: "#FF0000",
-    laranja: "#FFA500",
-    azul: "#0000FF",
-    dourado: "#DAA520",
-    rosa: "#FF69B4",
-    roxo: "#800080",
-    marrom: "#8B4513",
-    vinho: "#800000",
-    amarelo: "#FFFF00",
-    cinza: "#A9A9A9"
-  };
+  <script>
+    const dados = {
+      refrigeracao: { nome: "Refrigeração", rua: "Rua A", cor: "preto" },
+      filtros: { nome: "Filtros e Correias", rua: "Rua A", cor: "verde" },
+      transporte: { nome: "Transporte e Embarcação", rua: "Rua B", cor: "branco" },
+      informatica: { nome: "Informática e Câmeras", rua: "Rua C", cor: "vermelho" },
+      epi: { nome: "EPI", rua: "Rua C", cor: "laranja" },
+      eletronicos: { nome: "Eletrônicos", rua: "Rua C", cor: "amarelo" },
+      embalagens: { nome: "Embalagens", rua: "Rua C", cor: "azul" },
+      papelaria: { nome: "Papelaria e Pincéis Pilot", rua: "Rua D", cor: "marrom" },
+      compressores: { nome: "Compressores", rua: "Rua A", cor: "dourado" },
+      eletrica: { nome: "Elétrica", rua: "Rua B", cor: "rosa" },
+      uso_diario: { nome: "Uso Diário", rua: "Rua B", cor: "roxo" },
+      hidraulico: { nome: "Hidráulico", rua: "Rua A", cor: "vinho" },
+      embalagens_limpeza: { nome: "Embalagens/Limpeza", rua: "Rua E", cor: "cinza" },
+    };
 
-  function abrirModal(tipo) {
-    const item = dados[tipo];
-    const modal = document.getElementById("modal");
-    const modalContent = document.getElementById("modalContent");
+    const coresHex = {
+      preto: "#000000",
+      verde: "#008000",
+      branco: "#FFFFFF",
+      vermelho: "#FF0000",
+      laranja: "#FFA500",
+      azul: "#0000FF",
+      dourado: "#DAA520",
+      rosa: "#FF69B4",
+      roxo: "#800080",
+      marrom: "#8B4513",
+      vinho: "#800000",
+      amarelo: "#FFFF00",
+      cinza: "#A9A9A9"
+    };
 
-    modalContent.innerHTML = `
-      <h3>📦 ${item.nome}</h3>
-      <p><strong>📍 Rua:</strong> ${item.rua}</p>
-      <p><strong>🎨 Cor:</strong> ${item.cor.toUpperCase()} 
-        <span class="cor-box" style="background-color: ${coresHex[item.cor]}"></span>
-      </p>
-      <button class="close-btn" onclick="fecharModal()">Fechar</button>
-    `;
+    let materiaisCadastrados = JSON.parse(localStorage.getItem("materiais")) || [];
 
-    modal.style.display = "block";
-  }
+    function abrirModal(tipo) {
+      const item = dados[tipo];
+      const modal = document.getElementById("modal");
+      const modalContent = document.getElementById("modalContent");
 
-  function fecharModal() {
-    document.getElementById("modal").style.display = "none";
-  }
+      let materiais = materiaisCadastrados.filter(m => m.categoria === tipo);
+      let materiaisHTML = materiais.length ? `
+        <input type="text" placeholder="Buscar material..." oninput="buscarMaterial(this.value, '${tipo}')">
+        <div id="resultadoBusca"></div>
+      ` : '<p>Nenhum material cadastrado nesta categoria.</p>';
 
-  function abrirCadastro() {
-    document.getElementById("cadastroModal").style.display = "block";
-  }
+      modalContent.innerHTML = `
+        <h3>📦 ${item.nome}</h3>
+        <p><strong>📍 Rua:</strong> ${item.rua}</p>
+        <p><strong>🎨 Cor:</strong> ${item.cor.toUpperCase()} 
+          <span class="cor-box" style="background-color: ${coresHex[item.cor]}"></span>
+        </p>
+        ${materiaisHTML}
+        <button class="close-btn" onclick="fecharModal()">Fechar</button>
+      `;
 
-  function fecharCadastro() {
-    document.getElementById("cadastroModal").style.display = "none";
-  }
+      modal.style.display = "block";
+    }
 
-  // Fecha modal ao clicar fora
-  window.onclick = function(event) {
-    const modal = document.getElementById("modal");
-    const cadastro = document.getElementById("cadastroModal");
-    if (event.target === modal) modal.style.display = "none";
-    if (event.target === cadastro) cadastro.style.display = "none";
-  };
+    function buscarMaterial(valor, categoria) {
+      const resultadoDiv = document.getElementById("resultadoBusca");
+      const encontrados = materiaisCadastrados.filter(m => m.categoria === categoria && m.nome.toLowerCase().includes(valor.toLowerCase()));
+      resultadoDiv.innerHTML = encontrados.length ? encontrados.map(m => `
+        <p>🔹 ${m.nome}<br>🧭 Andar: ${m.andar} | Código: ${m.codigo}</p>
+      `).join('') : '<p>❌ Nenhum material encontrado.</p>';
+    }
 
-  // Envio do formulário para o Google Sheets
-  document.getElementById("formCadastro").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const form = e.target;
-    const data = new FormData(form);
-    
-    fetch(form.action, {
-      method: "POST",
-      body: data,
-    })
-    .then(response => response.text())
-    .then(result => {
-      document.getElementById("resposta").innerHTML = `<p style="color:green;">✅ ${result}</p>`;
-      form.reset();
-    })
-    .catch(error => {
-      document.getElementById("resposta").innerHTML = `<p style="color:red;">❌ Erro ao salvar: ${error.message}</p>`;
-    });
-  });
-</script>
+    function fecharModal() {
+      document.getElementById("modal").style.display = "none";
+    }
+
+    function abrirCadastro() {
+      document.getElementById("cadastroModal").style.display = "block";
+    }
+
+    function fecharCadastro() {
+      document.getElementById("cadastroModal").style.display = "none";
+    }
+
+    function salvarMaterial() {
+      const nome = document.getElementById("nomeMaterial").value;
+      const categoria = document.getElementById("categoriaMaterial").value;
+      const andar = document.getElementById("andarMaterial").value;
+      const codigo = document.getElementById("codigoMaterial").value;
+      materiaisCadastrados.push({ nome, categoria, andar, codigo });
+      localStorage.setItem("materiais", JSON.stringify(materiaisCadastrados));
+      fecharCadastro();
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById("modal");
+      const cadastro = document.getElementById("cadastroModal");
+      if (event.target === modal) modal.style.display = "none";
+      if (event.target === cadastro) cadastro.style.display = "none";
+    }
+  </script>
 
 </body>
 </html>
-
