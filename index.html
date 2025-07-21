@@ -166,23 +166,23 @@
   </div>
 
   <div id="modal" class="modal">
-    <div class="modal-content" id="modalContent"></div>
-  </div>
+  <div class="modal-content" id="modalContent"></div>
+</div>
 
-  <div class="modal" id="cadastroModal">
-    <div class="modal-content">
-      <h3>Cadastrar Novo Material</h3>
-      <form id="formCadastro" action="https://script.google.com/macros/s/AKfycbzv37vDAXEcsEPFbs7PSogmmI-JAVrcuFfh-AuYr7fBuKKfQQjmfYc-HpLSUCl1NOQe/exec" method="POST">
-        <input name="nome" placeholder="Nome do material" required />
-        <input name="categoria" placeholder="Categoria (ex: refrigeracao)" required />
-        <input name="andar" placeholder="Andar" required />
-        <input name="codigo" placeholder="Código" required />
-        <button type="submit">Salvar</button>
-        <button class="close-btn" type="button" onclick="fecharCadastro()">Fechar</button>
-      </form>
-      <div id="resposta" style="margin-top: 10px;"></div>
-    </div>
+<div class="modal" id="cadastroModal">
+  <div class="modal-content">
+    <h3>Cadastrar Novo Material</h3>
+    <form id="formCadastro" action="https://script.google.com/macros/s/AKfycbwZSdvKV1M7IP-cyhzdvoaj44ux3YyaxvvGu5TjxG-SqctA9mW6RhtX4uWauMyq7g/exec" method="POST">
+      <input name="nome" placeholder="Nome do material" required />
+      <input name="categoria" placeholder="Categoria (ex: refrigeracao)" required />
+      <input name="andar" placeholder="Andar" required />
+      <input name="codigo" placeholder="Código" required />
+      <button type="submit">Salvar</button>
+      <button class="close-btn" type="button" onclick="fecharCadastro()">Fechar</button>
+    </form>
+    <div id="resposta" style="margin-top: 10px;"></div>
   </div>
+</div>
 
   <script>
     const dados = {
@@ -276,3 +276,24 @@
 
 </body>
 </html>
+
+<script>
+  document.getElementById("formCadastro").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    
+    fetch(form.action, {
+      method: "POST",
+      body: data,
+    })
+    .then(response => response.text())
+    .then(result => {
+      document.getElementById("resposta").innerHTML = `<p style="color:green;">✅ ${result}</p>`;
+      form.reset();
+    })
+    .catch(error => {
+      document.getElementById("resposta").innerHTML = `<p style="color:red;">❌ Erro ao salvar: ${error.message}</p>`;
+    });
+  });
+</script>
