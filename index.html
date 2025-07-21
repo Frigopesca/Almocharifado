@@ -138,32 +138,6 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
-
-    @media (max-width: 600px) {
-      button {
-        width: 100%;
-        height: auto;
-        padding: 16px;
-        font-size: 18px;
-      }
-
-      .modal-content {
-        padding: 20px;
-      }
-
-      .modal-content p {
-        font-size: 18px;
-      }
-
-      .modal-content h3 {
-        font-size: 22px;
-      }
-
-      .cor-box {
-        width: 26px;
-        height: 26px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -189,7 +163,6 @@
     <button onclick="abrirModal('hidraulico')">Hidráulico</button>
     <button onclick="abrirModal('embalagens_limpeza')">Embalagens/Limpeza</button>
     <button onclick="abrirCadastro()">➕ Cadastrar Material</button>
-    
   </div>
 
   <div id="modal" class="modal">
@@ -199,12 +172,15 @@
   <div class="modal" id="cadastroModal">
     <div class="modal-content">
       <h3>Cadastrar Novo Material</h3>
-      <input id="nomeMaterial" placeholder="Nome do material" required />
-      <input id="categoriaMaterial" placeholder="Categoria (ex: refrigeracao)" required />
-      <input id="andarMaterial" placeholder="Andar" required />
-      <input id="codigoMaterial" placeholder="Código" required />
-      <button onclick="salvarMaterial()">Salvar</button>
-      <button class="close-btn" onclick="fecharCadastro()">Fechar</button>
+      <form id="formCadastro" action="https://script.google.com/macros/s/AKfycbzv37vDAXEcsEPFbs7PSogmmI-JAVrcuFfh-AuYr7fBuKKfQQjmfYc-HpLSUCl1NOQe/exec" method="POST">
+        <input name="nome" placeholder="Nome do material" required />
+        <input name="categoria" placeholder="Categoria (ex: refrigeracao)" required />
+        <input name="andar" placeholder="Andar" required />
+        <input name="codigo" placeholder="Código" required />
+        <button type="submit">Salvar</button>
+        <button class="close-btn" type="button" onclick="fecharCadastro()">Fechar</button>
+      </form>
+      <div id="resposta" style="margin-top: 10px;"></div>
     </div>
   </div>
 
@@ -222,7 +198,7 @@
       eletrica: { nome: "Elétrica", rua: "Rua B", cor: "rosa" },
       uso_diario: { nome: "Uso Diário", rua: "Rua B", cor: "roxo" },
       hidraulico: { nome: "Hidráulico", rua: "Rua A", cor: "vinho" },
-      embalagens_limpeza: { nome: "Embalagens/Limpeza", rua: "Rua E", cor: "cinza" },
+      embalagens_limpeza: { nome: "Embalagens/Limpeza", rua: "Rua E", cor: "cinza" }
     };
 
     const coresHex = {
@@ -241,18 +217,10 @@
       cinza: "#A9A9A9"
     };
 
-    let materiaisCadastrados = JSON.parse(localStorage.getItem("materiais")) || [];
-
     function abrirModal(tipo) {
       const item = dados[tipo];
       const modal = document.getElementById("modal");
       const modalContent = document.getElementById("modalContent");
-
-      let materiais = materiaisCadastrados.filter(m => m.categoria === tipo);
-      let materiaisHTML = materiais.length ? `
-        <input type="text" placeholder="Buscar material..." oninput="buscarMaterial(this.value, '${tipo}')">
-        <div id="resultadoBusca"></div>
-      ` : '<p>Nenhum material cadastrado nesta categoria.</p>';
 
       modalContent.innerHTML = `
         <h3>📦 ${item.nome}</h3>
@@ -260,19 +228,10 @@
         <p><strong>🎨 Cor:</strong> ${item.cor.toUpperCase()} 
           <span class="cor-box" style="background-color: ${coresHex[item.cor]}"></span>
         </p>
-        ${materiaisHTML}
         <button class="close-btn" onclick="fecharModal()">Fechar</button>
       `;
 
       modal.style.display = "block";
-    }
-
-    function buscarMaterial(valor, categoria) {
-      const resultadoDiv = document.getElementById("resultadoBusca");
-      const encontrados = materiaisCadastrados.filter(m => m.categoria === categoria && m.nome.toLowerCase().includes(valor.toLowerCase()));
-      resultadoDiv.innerHTML = encontrados.length ? encontrados.map(m => `
-        <p>🔹 ${m.nome}<br>🧭 Andar: ${m.andar} | Código: ${m.codigo}</p>
-      `).join('') : '<p>❌ Nenhum material encontrado.</p>';
     }
 
     function fecharModal() {
@@ -287,56 +246,32 @@
       document.getElementById("cadastroModal").style.display = "none";
     }
 
-  function salvarMaterial() {
-  const nome = document.getElementById("nomeMaterial").value.trim();
-  const categoria = document.getElementById("categoriaMaterial").value.trim();
-  const andar = document.getElementById("andarMaterial").value.trim();
-  const codigo = document.getElementById("codigoMaterial").value.trim();
-
-  if (!nome || !categoria || !andar || !codigo) {
-    alert("Por favor, preencha todos os campos.");
-    return;
-  }
-
-
-
-  function salvarMaterial() {
-  const nome = document.getElementById("nomeMaterial").value;
-  const categoria = document.getElementById("categoriaMaterial").value;
-  const andar = document.getElementById("andarMaterial").value;
-  const codigo = document.getElementById("codigoMaterial").value;
-
-  fetch("https://script.google.com/macros/s/AKfycbzxiDOgBSst4DuiEMKNXmbcQfnHYfkvTo6lshksMmP8lSEQZw__ZMPnA_YkKP_7cg2q/exec", {
-    method: "POST",
-    body: JSON.stringify({ nome, categoria, andar, codigo }),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-  .then(res => res.text())
-  .then(msg => {
-    alert("✅ Cadastro realizado com sucesso!");
-    fecharCadastro();
-  })
-  .catch(err => {
-    alert("❌ Erro ao cadastrar material");
-    console.error(err);
-  });
-}
-
-  const materiais = JSON.parse(localStorage.getItem("materiais")) || [];
-  materiais.push({ nome, categoria, andar, codigo });
-  localStorage.setItem("materiais", JSON.stringify(materiais));
-  alert("✅ Material cadastrado com sucesso!");
-  fecharCadastro();
-}
-
     window.onclick = function(event) {
       const modal = document.getElementById("modal");
       const cadastro = document.getElementById("cadastroModal");
       if (event.target === modal) modal.style.display = "none";
       if (event.target === cadastro) cadastro.style.display = "none";
     }
+
+    const form = document.getElementById("formCadastro");
+    const resposta = document.getElementById("resposta");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      fetch(form.action, {
+        method: "POST",
+        body: new FormData(form)
+      })
+        .then(res => res.text())
+        .then(txt => {
+          resposta.innerText = "✅ Material salvo com sucesso!";
+          form.reset();
+        })
+        .catch(err => {
+          resposta.innerText = "❌ Erro ao salvar. Verifique a conexão ou o link.";
+          console.error(err);
+        });
+    });
   </script>
 
 </body>
