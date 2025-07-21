@@ -184,100 +184,77 @@
   </div>
 </div>
 
-  <script>
-    const dados = {
-      refrigeracao: { nome: "Refrigeração", rua: "Rua A", cor: "preto" },
-      filtros: { nome: "Filtros e Correias", rua: "Rua A", cor: "verde" },
-      transporte: { nome: "Transporte e Embarcação", rua: "Rua B", cor: "branco" },
-      informatica: { nome: "Informática e Câmeras", rua: "Rua C", cor: "vermelho" },
-      epi: { nome: "EPI", rua: "Rua C", cor: "laranja" },
-      eletronicos: { nome: "Eletrônicos", rua: "Rua C", cor: "amarelo" },
-      embalagens: { nome: "Embalagens", rua: "Rua C", cor: "azul" },
-      papelaria: { nome: "Papelaria e Pincéis Pilot", rua: "Rua D", cor: "marrom" },
-      compressores: { nome: "Compressores", rua: "Rua A", cor: "dourado" },
-      eletrica: { nome: "Elétrica", rua: "Rua B", cor: "rosa" },
-      uso_diario: { nome: "Uso Diário", rua: "Rua B", cor: "roxo" },
-      hidraulico: { nome: "Hidráulico", rua: "Rua A", cor: "vinho" },
-      embalagens_limpeza: { nome: "Embalagens/Limpeza", rua: "Rua E", cor: "cinza" }
-    };
+ <script>
+  const dados = {
+    refrigeracao: { nome: "Refrigeração", rua: "Rua A", cor: "preto" },
+    filtros: { nome: "Filtros e Correias", rua: "Rua A", cor: "verde" },
+    transporte: { nome: "Transporte e Embarcação", rua: "Rua B", cor: "branco" },
+    informatica: { nome: "Informática e Câmeras", rua: "Rua C", cor: "vermelho" },
+    epi: { nome: "EPI", rua: "Rua C", cor: "laranja" },
+    eletronicos: { nome: "Eletrônicos", rua: "Rua C", cor: "amarelo" },
+    embalagens: { nome: "Embalagens", rua: "Rua C", cor: "azul" },
+    papelaria: { nome: "Papelaria e Pincéis Pilot", rua: "Rua D", cor: "marrom" },
+    compressores: { nome: "Compressores", rua: "Rua A", cor: "dourado" },
+    eletrica: { nome: "Elétrica", rua: "Rua B", cor: "rosa" },
+    uso_diario: { nome: "Uso Diário", rua: "Rua B", cor: "roxo" },
+    hidraulico: { nome: "Hidráulico", rua: "Rua A", cor: "vinho" },
+    embalagens_limpeza: { nome: "Embalagens/Limpeza", rua: "Rua E", cor: "cinza" }
+  };
 
-    const coresHex = {
-      preto: "#000000",
-      verde: "#008000",
-      branco: "#FFFFFF",
-      vermelho: "#FF0000",
-      laranja: "#FFA500",
-      azul: "#0000FF",
-      dourado: "#DAA520",
-      rosa: "#FF69B4",
-      roxo: "#800080",
-      marrom: "#8B4513",
-      vinho: "#800000",
-      amarelo: "#FFFF00",
-      cinza: "#A9A9A9"
-    };
+  const coresHex = {
+    preto: "#000000",
+    verde: "#008000",
+    branco: "#FFFFFF",
+    vermelho: "#FF0000",
+    laranja: "#FFA500",
+    azul: "#0000FF",
+    dourado: "#DAA520",
+    rosa: "#FF69B4",
+    roxo: "#800080",
+    marrom: "#8B4513",
+    vinho: "#800000",
+    amarelo: "#FFFF00",
+    cinza: "#A9A9A9"
+  };
 
-    function abrirModal(tipo) {
-      const item = dados[tipo];
-      const modal = document.getElementById("modal");
-      const modalContent = document.getElementById("modalContent");
+  function abrirModal(tipo) {
+    const item = dados[tipo];
+    const modal = document.getElementById("modal");
+    const modalContent = document.getElementById("modalContent");
 
-      modalContent.innerHTML = `
-        <h3>📦 ${item.nome}</h3>
-        <p><strong>📍 Rua:</strong> ${item.rua}</p>
-        <p><strong>🎨 Cor:</strong> ${item.cor.toUpperCase()} 
-          <span class="cor-box" style="background-color: ${coresHex[item.cor]}"></span>
-        </p>
-        <button class="close-btn" onclick="fecharModal()">Fechar</button>
-      `;
+    modalContent.innerHTML = `
+      <h3>📦 ${item.nome}</h3>
+      <p><strong>📍 Rua:</strong> ${item.rua}</p>
+      <p><strong>🎨 Cor:</strong> ${item.cor.toUpperCase()} 
+        <span class="cor-box" style="background-color: ${coresHex[item.cor]}"></span>
+      </p>
+      <button class="close-btn" onclick="fecharModal()">Fechar</button>
+    `;
 
-      modal.style.display = "block";
-    }
+    modal.style.display = "block";
+  }
 
-    function fecharModal() {
-      document.getElementById("modal").style.display = "none";
-    }
+  function fecharModal() {
+    document.getElementById("modal").style.display = "none";
+  }
 
-    function abrirCadastro() {
-      document.getElementById("cadastroModal").style.display = "block";
-    }
+  function abrirCadastro() {
+    document.getElementById("cadastroModal").style.display = "block";
+  }
 
-    function fecharCadastro() {
-      document.getElementById("cadastroModal").style.display = "none";
-    }
+  function fecharCadastro() {
+    document.getElementById("cadastroModal").style.display = "none";
+  }
 
-    window.onclick = function(event) {
-      const modal = document.getElementById("modal");
-      const cadastro = document.getElementById("cadastroModal");
-      if (event.target === modal) modal.style.display = "none";
-      if (event.target === cadastro) cadastro.style.display = "none";
-    }
+  // Fecha modal ao clicar fora
+  window.onclick = function(event) {
+    const modal = document.getElementById("modal");
+    const cadastro = document.getElementById("cadastroModal");
+    if (event.target === modal) modal.style.display = "none";
+    if (event.target === cadastro) cadastro.style.display = "none";
+  };
 
-    const form = document.getElementById("formCadastro");
-    const resposta = document.getElementById("resposta");
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      fetch(form.action, {
-        method: "POST",
-        body: new FormData(form)
-      })
-        .then(res => res.text())
-        .then(txt => {
-          resposta.innerText = "✅ Material salvo com sucesso!";
-          form.reset();
-        })
-        .catch(err => {
-          resposta.innerText = "❌ Erro ao salvar. Verifique a conexão ou o link.";
-          console.error(err);
-        });
-    });
-  </script>
-
-</body>
-</html>
-
-<script>
+  // Envio do formulário para o Google Sheets
   document.getElementById("formCadastro").addEventListener("submit", function (e) {
     e.preventDefault();
     const form = e.target;
@@ -297,3 +274,7 @@
     });
   });
 </script>
+
+</body>
+</html>
+
