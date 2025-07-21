@@ -298,6 +298,32 @@
     return;
   }
 
+
+
+  function salvarMaterial() {
+  const nome = document.getElementById("nomeMaterial").value;
+  const categoria = document.getElementById("categoriaMaterial").value;
+  const andar = document.getElementById("andarMaterial").value;
+  const codigo = document.getElementById("codigoMaterial").value;
+
+  fetch("https://script.google.com/macros/s/AKfycbzxiDOgBSst4DuiEMKNXmbcQfnHYfkvTo6lshksMmP8lSEQZw__ZMPnA_YkKP_7cg2q/exec", {
+    method: "POST",
+    body: JSON.stringify({ nome, categoria, andar, codigo }),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  .then(res => res.text())
+  .then(msg => {
+    alert("✅ Cadastro realizado com sucesso!");
+    fecharCadastro();
+  })
+  .catch(err => {
+    alert("❌ Erro ao cadastrar material");
+    console.error(err);
+  });
+}
+
   const materiais = JSON.parse(localStorage.getItem("materiais")) || [];
   materiais.push({ nome, categoria, andar, codigo });
   localStorage.setItem("materiais", JSON.stringify(materiais));
