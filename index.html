@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<html lang="pt-BR"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Classificação de Materiais</title>
   <style>
     :root {
@@ -191,19 +189,32 @@
     <button onclick="abrirCadastro()">➕ Cadastrar Material</button>
   </div>
 
-  <div id="modal" class="modal">
-    <div class="modal-content" id="modalContent"></div>
+  <!-- Modal de visualização -->
+  <div id="modal" class="modal" style="display: none;">
+    <div class="modal-content" id="modalContent">
+        <h3>📦 Compressores</h3>
+        <p><strong>📍 Rua:</strong> Rua A</p>
+        <p><strong>🎨 Cor:</strong> DOURADO
+          <span class="cor-box" style="background-color: #DAA520"></span>
+        </p>
+        <input type="text" placeholder="Buscar material..." oninput="buscarMaterial(this.value, 'compressores')">
+        <div id="resultadoBusca"></div>
+        <button class="close-btn" onclick="fecharModal()">Fechar</button>
+      </div>
   </div>
 
+  <!-- Modal de cadastro -->
   <div class="modal" id="cadastroModal">
     <div class="modal-content">
       <h3>Cadastrar Novo Material</h3>
-      <input id="nomeMaterial" placeholder="Nome do material" required />
-      <input id="categoriaMaterial" placeholder="Categoria (ex: refrigeracao)" required />
-      <input id="andarMaterial" placeholder="Andar" required />
-      <input id="codigoMaterial" placeholder="Código" required />
-      <button onclick="salvarMaterial()">Salvar</button>
-      <button class="close-btn" onclick="fecharCadastro()">Fechar</button>
+      <form action="cadastrar.php" method="POST">
+        <input name="nome" placeholder="Nome do material" required="">
+        <input name="categoria" placeholder="Categoria (ex: refrigeracao)" required="">
+        <input name="andar" placeholder="Andar" required="">
+        <input name="codigo" placeholder="Código" required="">
+        <button type="submit">Salvar</button>
+        <button type="button" class="close-btn" onclick="fecharCadastro()">Fechar</button>
+      </form>
     </div>
   </div>
 
@@ -225,53 +236,37 @@
     };
 
     const coresHex = {
-      preto: "#000000",
-      verde: "#008000",
-      branco: "#FFFFFF",
-      vermelho: "#FF0000",
-      laranja: "#FFA500",
-      azul: "#0000FF",
-      dourado: "#DAA520",
-      rosa: "#FF69B4",
-      roxo: "#800080",
-      marrom: "#8B4513",
-      vinho: "#800000",
-      amarelo: "#FFFF00",
-      cinza: "#A9A9A9"
+      preto: "#000000", verde: "#008000", branco: "#FFFFFF",
+      vermelho: "#FF0000", laranja: "#FFA500", azul: "#0000FF",
+      dourado: "#DAA520", rosa: "#FF69B4", roxo: "#800080",
+      marrom: "#8B4513", vinho: "#800000", amarelo: "#FFFF00", cinza: "#A9A9A9"
     };
-
-    let materiaisCadastrados = JSON.parse(localStorage.getItem("materiais")) || [];
 
     function abrirModal(tipo) {
       const item = dados[tipo];
       const modal = document.getElementById("modal");
       const modalContent = document.getElementById("modalContent");
 
-      let materiais = materiaisCadastrados.filter(m => m.categoria === tipo);
-      let materiaisHTML = materiais.length ? `
-        <input type="text" placeholder="Buscar material..." oninput="buscarMaterial(this.value, '${tipo}')">
-        <div id="resultadoBusca"></div>
-      ` : '<p>Nenhum material cadastrado nesta categoria.</p>';
-
       modalContent.innerHTML = `
         <h3>📦 ${item.nome}</h3>
         <p><strong>📍 Rua:</strong> ${item.rua}</p>
-        <p><strong>🎨 Cor:</strong> ${item.cor.toUpperCase()} 
+        <p><strong>🎨 Cor:</strong> ${item.cor.toUpperCase()}
           <span class="cor-box" style="background-color: ${coresHex[item.cor]}"></span>
         </p>
-        ${materiaisHTML}
+        <input type="text" placeholder="Buscar material..." oninput="buscarMaterial(this.value, '${tipo}')">
+        <div id="resultadoBusca"></div>
         <button class="close-btn" onclick="fecharModal()">Fechar</button>
       `;
-
       modal.style.display = "block";
     }
 
     function buscarMaterial(valor, categoria) {
       const resultadoDiv = document.getElementById("resultadoBusca");
-      const encontrados = materiaisCadastrados.filter(m => m.categoria === categoria && m.nome.toLowerCase().includes(valor.toLowerCase()));
-      resultadoDiv.innerHTML = encontrados.length ? encontrados.map(m => `
-        <p>🔹 ${m.nome}<br>🧭 Andar: ${m.andar} | Código: ${m.codigo}</p>
-      `).join('') : '<p>❌ Nenhum material encontrado.</p>';
+      fetch(`buscar.php?categoria=${categoria}&busca=${valor}`)
+        .then(res => res.text())
+        .then(data => {
+          resultadoDiv.innerHTML = data;
+        });
     }
 
     function fecharModal() {
@@ -286,16 +281,6 @@
       document.getElementById("cadastroModal").style.display = "none";
     }
 
-    function salvarMaterial() {
-      const nome = document.getElementById("nomeMaterial").value;
-      const categoria = document.getElementById("categoriaMaterial").value;
-      const andar = document.getElementById("andarMaterial").value;
-      const codigo = document.getElementById("codigoMaterial").value;
-      materiaisCadastrados.push({ nome, categoria, andar, codigo });
-      localStorage.setItem("materiais", JSON.stringify(materiaisCadastrados));
-      fecharCadastro();
-    }
-
     window.onclick = function(event) {
       const modal = document.getElementById("modal");
       const cadastro = document.getElementById("cadastroModal");
@@ -304,5 +289,6 @@
     }
   </script>
 
-</body>
-</html>
+
+
+</body></html>

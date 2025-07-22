@@ -1,0 +1,32 @@
+[
+    {
+        "nome": "Compressor ABC",
+        "categoria": "compressores",
+        "andar": "1",
+        "codigo": "C-123"
+    },
+    {
+        "nome": "Luva Nitrílica",
+        "categoria": "epi",
+        "andar": "2",
+        "codigo": "E-456"
+    },
+    {
+        "nome": "Câmera HD",
+        "categoria": "informatica",
+        "andar": "3",
+        "codigo": "I-789"
+    },
+    {
+        "nome": "Notebook Dell",
+        "categoria": "informatica",
+        "andar": "3",
+        "codigo": "I-101"
+    },
+    {
+        "nome": "Máscara PFF2",
+        "categoria": "epi",
+        "andar": "2",
+        "codigo": "E-789"
+    }
+]
